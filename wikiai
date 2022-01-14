@@ -1,0 +1,83 @@
+import speech_recognition as sr
+import pyttsx3 as ptx
+import wikipedia
+import spacy
+
+listener = sr.Recognizer()
+engine = ptx.init()
+voices = engine.getProperty('voices')
+engine.setProperty('voice',voices[1].id)
+nlp = spacy.load("en_core_web_sm")
+x = 1
+
+while x == 1:
+    with sr.Microphone() as source:
+        print ('listening...')
+        voice = listener.listen(source)
+        command = listener.recognize_google(voice)
+        command = command.lower()
+        if 'can you tell me the meaning of' in command:
+            i = command[31:]
+            y = wikipedia.search(i, sentences = 2)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'what is the meaning of' in command:
+            i = command[23:]
+            y = wikipedia.summary(i, sentences = 2)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'what is' in command:
+            i = command[8:]
+            y = wikipedia.summary(i, sentences = 1)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'search' in command:
+            i = command[5:]
+            y = wikipedia.summary(i, sentences = 2)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'what are' in command:
+            i = command[9:]
+            y = wikipedia.summary(i, sentences = 1)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'who is' in command:
+            i = command[7:]
+            y = wikipedia.summary(i, sentences = 2)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'who are' in command:
+            i = command[8:]
+            y = wikipedia.summary(i, sentences = 2)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'where is' in command:
+            i = command[9:]
+            y = wikipedia.summary(i, sentences = 3)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'tell me about' in command:
+            i = command[14:]
+            y = wikipedia.summary(i, sentences = 1)
+            engine.say(y)
+            engine.runAndWait()
+        elif 'hi' in command:
+            engine.say('hey')
+            engine.runAndWait()
+        elif 'hello' in command:
+            engine.say('hello')
+            engine.runAndWait()
+        elif 'what is your name' in command:
+            engine.say('my name is unix')
+            engine.runAndWait()
+        elif "what's your name" in command:
+            engine.say('my name is unix')
+            engine.runAndWait()
+        elif 'what do i call you' in command:
+            engine.say('call me unix')
+            engine.runAndWait()
+        elif "exit" in command:
+            x = 0
+        else:
+            engine.say('understood')
+            engine.runAndWait()
