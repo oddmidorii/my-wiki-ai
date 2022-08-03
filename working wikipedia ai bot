@@ -1,83 +1,242 @@
-import speech_recognition as sr
 import pyttsx3 as ptx
 import wikipedia
-import spacy
+from wikipedia import summary
+from bs4 import BeautifulSoup 
+import requests
+import datetime
+import time 
 
-listener = sr.Recognizer()
+
+import os
+
+
+
 engine = ptx.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice',voices[1].id)
-nlp = spacy.load("en_core_web_sm")
-x = 1
+engine.setProperty("rate", 153)
 
-while x == 1:
-    with sr.Microphone() as source:
-        print ('listening...')
-        voice = listener.listen(source)
-        command = listener.recognize_google(voice)
+
+xtxt = ".txt"
+
+todaydate = datetime.datetime.now()
+
+x = 1
+z = 1
+
+def dot1(x):
+    while x == 1:
+        command = input('Type here:')
         command = command.lower()
-        if 'can you tell me the meaning of' in command:
-            i = command[31:]
-            y = wikipedia.search(i, sentences = 2)
+        if 'tell me the meaning of' in command:
+            i = command[23:] + " meaning"
+            y = wikipedia.search(i)
             engine.say(y)
+            engine.runAndWait()
+        elif 'can you hear me' in command:
+            engine.say("yes")
+            engine.runAndWait()
+        elif 'what time is it' in command:
+            print(todaydate)
+            engine.say(todaydate)
+            engine.runAndWait()
+        elif "s the date" in command:
+            print(todaydate)
+            engine.say(todaydate)
+            engine.runAndWait()
+        elif "s the time" in command:
+            print(todaydate)
+            engine.say(todaydate)
             engine.runAndWait()
         elif 'what is the meaning of' in command:
             i = command[23:]
-            y = wikipedia.summary(i, sentences = 2)
+            y = wikipedia.summary(i)
             engine.say(y)
             engine.runAndWait()
         elif 'what is' in command:
-            i = command[8:]
-            y = wikipedia.summary(i, sentences = 1)
-            engine.say(y)
-            engine.runAndWait()
-        elif 'search' in command:
-            i = command[5:]
-            y = wikipedia.summary(i, sentences = 2)
-            engine.say(y)
-            engine.runAndWait()
+            if 'your name' in command:
+                engine.say('you can call me unix')
+                engine.runAndWait()
+            else:
+                i = command[8:]
+                y = wikipedia.summary(i)
+                engine.say(y)
+                engine.runAndWait()
+        elif "what's" in command:
+            if 'your name' in command:
+                engine.say('you can call me unix')
+                engine.runAndWait()
+            else:
+                i = command[7:]
+                y = wikipedia.summary(i)
+                engine.say(y)
+                engine.runAndWait()    
         elif 'what are' in command:
-            i = command[9:]
-            y = wikipedia.summary(i, sentences = 1)
-            engine.say(y)
-            engine.runAndWait()
+            if 'you' in command:
+                engine.say('you can call me unix, i am an a i made by David')
+                engine.runAndWait()
+            else:
+                i = command[9:]
+                y = wikipedia.summary(i)
+                engine.say(y)
+                engine.runAndWait()
         elif 'who is' in command:
-            i = command[7:]
-            y = wikipedia.summary(i, sentences = 2)
+            if 'this' in command:
+                engine.say('you can call me unix, i am an a i made by David')
+                engine.runAndWait()
+            else:
+                i = command[7:]
+                y = wikipedia.summary(i)
+                engine.say(y)
+                engine.runAndWait()
+        elif "who's" in command:
+            i = command[6:]
+            y = wikipedia.summary(i)
             engine.say(y)
             engine.runAndWait()
         elif 'who are' in command:
-            i = command[8:]
-            y = wikipedia.summary(i, sentences = 2)
-            engine.say(y)
-            engine.runAndWait()
+            if 'you' in command:
+                engine.say('i am an artificial intelligence made by David')
+                engine.runAndWait()
+            else:
+                i = command[8:]
+                y = wikipedia.summary(i)
+                engine.say(y)
+                engine.runAndWait()
         elif 'where is' in command:
             i = command[9:]
-            y = wikipedia.summary(i, sentences = 3)
+            y = wikipedia.summary(i)
+            engine.say(y)
+            engine.runAndWait()
+        elif "where's" in command:
+            i = command[8:]
+            y = wikipedia.summary(i)
             engine.say(y)
             engine.runAndWait()
         elif 'tell me about' in command:
             i = command[14:]
-            y = wikipedia.summary(i, sentences = 1)
+            y = wikipedia.summary(i)
             engine.say(y)
             engine.runAndWait()
+        elif 'hey' in command:
+            engine.say('how can i help?')
+            engine.runAndWait()
         elif 'hi' in command:
-            engine.say('hey')
+            engine.say('what do you need?')
             engine.runAndWait()
         elif 'hello' in command:
-            engine.say('hello')
-            engine.runAndWait()
-        elif 'what is your name' in command:
-            engine.say('my name is unix')
-            engine.runAndWait()
-        elif "what's your name" in command:
-            engine.say('my name is unix')
+            engine.say('im here')
             engine.runAndWait()
         elif 'what do i call you' in command:
             engine.say('call me unix')
             engine.runAndWait()
-        elif "exit" in command:
-            x = 0
-        else:
-            engine.say('understood')
+        elif 'unix you there' in command:
+            engine.say('at your service')
             engine.runAndWait()
+        elif 'unix, you there?' in command:
+            engine.say('at your service')
+            engine.runAndWait()
+        elif 'unix' in command:
+            engine.say('im at your service')
+            engine.runAndWait()
+        elif "update me" in command:
+            engine.say('currently')
+            dotnews1()
+        elif "give me" in command:
+            if "news update" in command:
+                engine.say('loading')
+                dotnews1()
+            elif "news updates" in command:
+                engine.say('downloading')
+                dotnews2()
+            elif "world affairs" in command:
+                engine.say('as you wish')
+                dotnews2()
+            elif "current events" in command:
+                engine.say('as you wish boss')
+                dotnews2()
+            elif "headlines" in command:
+                engine.say('here')
+                dotnews2()
+            elif "headline" in command:
+                engine.say('ok sir')
+                dotnews1()
+            else:
+                engine.say("i'm not sure what you need")
+
+        elif "run a voice test" in command:
+            engine.say('i can see far beyond the rainbow')
+            engine.runAndWait()
+        elif "run voice test" in command:
+            engine.say('nothing and noone protecting me, 1 million mirrors reflecting me')
+            engine.runAndWait()
+        elif "exit code" in command:
+            engine.say('leaving you')
+            engine.runAndWait()
+            x = 0
+        elif "exit" in command:
+            engine.say('going to sleep')
+            engine.runAndWait()
+            x = 0
+        elif "shut down" in command:
+            engine.say('shutting down')
+            engine.runAndWait()
+            x = 0
+        elif "take a nap" in command:
+            engine.say('leaving you')
+            engine.runAndWait()
+            x = 0
+        elif "never mind" in command:
+            engine.say('leaving you')
+            engine.runAndWait()
+            x = 0
+        elif "no thanks" in command:
+            engine.say('leaving you')
+            engine.runAndWait()
+            x = 0
+        elif "no thank you" in command:
+            engine.say('leaving you')
+            engine.runAndWait()
+            x = 0
+        elif "that's all" in command:
+            engine.say('always a pleasure')
+            engine.runAndWait()
+            x = 0
+        elif "that will be all" in command:
+            engine.say('always a pleasure')
+            engine.runAndWait()
+            x = 0
+        elif "that's it" in command:
+            engine.say('glad i could help')
+            engine.runAndWait()
+            x = 0
+
+        else:
+            engine.say('i dont have a response for that')
+            engine.runAndWait()
+    else:
+        x = 0
+
+def dotnews1():
+    html_text = requests.get('https://www.reuters.com/news/archive/worldNews')
+    soup = BeautifulSoup(html_text.text, 'html.parser')
+    headlines = soup.find('h3', class_ = "story-title")
+    engine.say(headlines)
+    engine.say("that's the summary, anything else?")
+    engine.runAndWait()
+
+def dotnews2():
+    html_text = requests.get('https://www.reuters.com/news/archive/worldNews')
+    soup = BeautifulSoup(html_text.text, 'html.parser')
+    headlines = soup.find_all('h3', class_ = "story-title")
+    engine.say(headlines)
+    engine.say("that's all sir, anything else?")
+    engine.runAndWait()
+engine.say('dots initialized')
+
+t = 1
+while t ==1:
+    dot1(x)
+    t = 0
+engine.say('shutting down')
+engine.runAndWait()
